@@ -25,7 +25,7 @@ AC_SUBST([AM_CPPFLAGS])
 AC_SUBST([LOCAL_LIBS])
 AC_SUBST([LIBURI_SUBDIRS])
 if test x"$have_liburi" = x"yes" ; then
-	AC_DEFINE_UNQUOTED([HAVE_LIBURI],[1],[Define if liburi is available])
+	AC_DEFINE_UNQUOTED([WITH_LIBURI],[1],[Define if liburi is available])
 fi
 ])dnl
 dnl

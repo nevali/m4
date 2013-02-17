@@ -24,7 +24,7 @@ AC_CHECK_FUNC([uuid_compare],,[
 ])
 AC_SUBST([have_libuuid])
 if test x"$have_libuuid" = x"yes" ; then
-	AC_DEFINE_UNQUOTED([HAVE_LIBUUID],[1],[Define if libuuid is available])
+	AC_DEFINE_UNQUOTED([WITH_LIBUUID],[1],[Define if libuuid is available])
 fi
 
 dnl

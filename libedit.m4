@@ -36,7 +36,7 @@ AC_SUBST([have_libedit])
 AC_SUBST([LIBEDIT_LIBS])
 AC_SUBST([LIBEDIT_SUBDIRS])
 if test x"$have_libedit" = x"yes" ; then
-	AC_DEFINE_UNQUOTED([HAVE_LIBEDIT],[1],[Define if libedit is available])
+	AC_DEFINE_UNQUOTED([WITH_LIBEDIT],[1],[Define if libedit is available])
 fi
 ])dnl
 dnl

@@ -43,7 +43,7 @@ AC_SUBST([MYSQL_LIBS])
 AC_SUBST([MYSQL_LIBDIR])
 AC_SUBST([mysql_darwin_fixups])
 if test x"$have_mysql" = x"yes" ; then
-	AC_DEFINE_UNQUOTED([HAVE_MYSQL],[1],[Define if MySQL is available])
+	AC_DEFINE_UNQUOTED([WITH_MYSQL],[1],[Define if MySQL is available])
 fi
 ])dnl
 dnl

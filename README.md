@@ -27,3 +27,31 @@ The included macros are:
 * `BT_CHECK_LIBUUID`, `BT_REQUIRE_LIBUUID`: Check for the library containing `uuid_compare()`.
 * `BT_CHECK_LIBEDIT`, `BT_REQUIRE_LIBEDIT`: Check for the library containing `libedit`, which may be included in the source tree.
 * `BT_CHECK_LIBURI`, `BT_REQUIRE_LIBURI`: Build an in-tree copy of `liburi`.
+
+In addition, `lib.m4` defines `BT_CHECK_LIB`, a generic framework for
+checking for libraries, including support for dealing with bundled
+sub-projects within the source tree.
+
+`BT_CHECK_LIB` is defined as:
+
+	BT_CHECK_LIB(name,[local-subdir],test-code,[use-local-code],
+		[action-if-found],[action-if-not-found])
+
+`name` is the name of the library, such as `libtiff`, and is used to
+construct variables and help strings.
+
+If `local-subdir` is specified, it is the name of the subdirectory within
+the source tree which will optionally contain a bundled copy of the library.
+
+`test-code` is a fragment which will test for the presence of the library,
+and set `have_name` to `yes` if it is present (e.g., `have_libtiff=yes`).
+The fragment should not invoke `AC_MSG_ERROR` if the library is not found.
+
+`use-local-code` is a fragment which will be invoked if the bundled copy
+of the code is selected. It should set the variables `NAME_CPPFLAGS`,
+`NAME_LDFLAGS`, `NAME_LIBS` and `NAME_LOCAL_LIBS` as necessary.
+
+If `action-if-found` is omitted, `AM_CPPFLAGS`, `AM_LDFLAGS`, `LIBS` and
+`LOCAL_LIBS` will be updated if the library was found. If
+`action-if-not-found` is ommitted, no action will be performed if the
+library was not found.

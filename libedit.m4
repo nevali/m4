@@ -14,39 +14,37 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
+dnl Internal: _BT_CHECK_LIBEDIT([action-if-found],[action-if-not-found],[localdir])
 AC_DEFUN([_BT_CHECK_LIBEDIT],[
-have_libedit=no
-local_libedit=no
-test -d "$srcdir/libedit" && local_libedit=auto
-AC_ARG_WITH([included_libedit],[AS_HELP_STRING([--with-included-libedit],[build and install the included libedit (default=auto)])],,[with_included_libedit=$local_libedit])
-
-if test x"$with_included_libedit" = x"no" || test x"$with_included_libedit" = x"auto" ; then
-	AC_CHECK_LIB([edit],[el_init],[with_included_libedit=no ; have_libedit=yes ; LIBEDIT_LIBS="-ledit"])
-fi
-
-if test x"$with_included_libedit" = x"yes" || test x"$with_included_libedit" = x"auto" ; then
-	AC_CONFIG_SUBDIRS([libedit])
-	have_libedit=yes
-	AM_CPPFLAGS="$AM_CPPFLAGS -I\${top_builddir}/libedit/src -I\${top_srcdir}/libedit/src"
-	LIBEDIT_LIBS="\${top_builddir}/libedit/src/libedit.la"
-	LIBEDIT_SUBDIRS="libedit"
-	AC_SUBST([AM_CPPFLAGS])
-fi
-AC_SUBST([have_libedit])
-AC_SUBST([LIBEDIT_LIBS])
-AC_SUBST([LIBEDIT_SUBDIRS])
-if test x"$have_libedit" = x"yes" ; then
-	AC_DEFINE_UNQUOTED([WITH_LIBEDIT],[1],[Define if libedit is available])
-fi
+BT_CHECK_LIB([libedit],[$3],[
+	AC_CHECK_LIB([edit],[el_init],[have_libedit=yes ; LIBEDIT_LIBS="-ledit"])
+],[
+	LIBEDIT_CPPFLAGS="-I\${top_builddir}/$3/src -I\${top_srcdir}/libedit/src"
+	LIBEDIT_LOCAL_LIBS="\${top_builddir}/$3/src/libedit.la"
+],[$1],[$2])
 ])dnl
 dnl
+dnl - BT_CHECK_LIBEDIT([action-if-found],[action-if-not-found])
+dnl Default action is to update AM_CPPFLAGS, AM_LDFLAGS, LIBS and LOCAL_LIBS
+dnl as required, and do nothing if not found
 AC_DEFUN([BT_CHECK_LIBEDIT],[
-AC_REQUIRE([_BT_CHECK_LIBEDIT])dnl
+_BT_CHECK_LIBEDIT([$1],[$2])
 ])dnl
-dnl
+dnl - BT_CHECK_LIBEDIT_INCLUDED([action-if-found],[action-if-not-found],[subdir=libedit])
+AC_DEFUN([BT_CHECK_LIBEDIT_INCLUDED],[
+AS_LITERAL_IF([$3],,[AC_DIAGNOSE([syntax],[$0: subdir must be a literal])])dnl
+_BT_CHECK_LIBEDIT([$1],[$2],m4_ifval([$3],[$3],[libedit]))
+])dnl
+dnl - BT_REQUIRE_LIBEDIT([action-if-found])
 AC_DEFUN([BT_REQUIRE_LIBEDIT],[
-AC_REQUIRE([_BT_CHECK_LIBEDIT])dnl
-if test x"$have_libedit" = x"no" ; then
+_BT_CHECK_LIBEDIT([$1],[
 	AC_MSG_ERROR([cannot find required library libedit])
-fi
+])
+])dnl
+dnl - BT_REQUIRE_LIBEDIT_INCLUDED([action-if-found],[subdir=libedit])
+AC_DEFUN([BT_REQUIRE_LIBEDIT_INCLUDED],[
+AS_LITERAL_IF([$2],,[AC_DIAGNOSE([syntax],[$0: subdir passed must be a literal])])dnl
+_BT_CHECK_LIBEDIT([$1],[
+	AC_MSG_ERROR([cannot find required library libedit])
+],m4_ifval([$2],[$2],[libedit]))
 ])dnl

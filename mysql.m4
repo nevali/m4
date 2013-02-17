@@ -14,12 +14,12 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
-AC_DEFUN([BT_CHECK_MYSQL],[
+AC_DEFUN([_BT_CHECK_MYSQL],[
+have_mysql=no
+mysql_darwin_fixups=no
 AC_CHECK_PROG([MYSQL_CONFIG],[mysql_config],[mysql_config])
 if ! test x"$MYSQL_CONFIG" = x"" ; then
-   engine_mysql="yes"
-   mysql_darwin_fixups="no"
-   ENGINE_SUBDIRS="$ENGINE_SUBDIRS mysql"
+   have_mysql=yes
    MYSQL_CPPFLAGS=`$MYSQL_CONFIG --include`
    MYSQL_LIBDIR=`$MYSQL_CONFIG --variable=pkglibdir`
    if test "$?" -gt 0 ; then
@@ -36,9 +36,24 @@ dnl post-build.
    	  mysql_darwin_fixups=yes
    fi
 fi
+AC_SUBST([have_mysql])
 AC_SUBST([MYSQL_CONFIG])
 AC_SUBST([MYSQL_CPPFLAGS])
 AC_SUBST([MYSQL_LIBS])
 AC_SUBST([MYSQL_LIBDIR])
 AC_SUBST([mysql_darwin_fixups])
+if test x"$have_mysql" = x"yes" ; then
+	AC_DEFINE_UNQUOTED([HAVE_MYSQL],[1],[Define if MySQL is available])
+fi
+])dnl
+dnl
+AC_DEFUN([BT_CHECK_MYSQL],[
+AC_REQUIRE([_BT_CHECK_MYSQL])dnl
+])dnl
+dnl
+AC_DEFUN([BT_REQUIRE_MYSQL],[
+AC_REQUIRE([_BT_CHECK_MYSQL])dnl
+if test x"$have_mysql" = x"no" ; then
+	AC_MSG_ERROR([cannot locate the MySQL client libraries; check that the mysql_config utility can be found])
+fi
 ])dnl

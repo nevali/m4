@@ -23,7 +23,7 @@ The included macros are:
 * `BT_DEFINE_PREFIX`: Define `PREFIX`, `EXEC_PREFIX`, `LIBDIR` and `INCLUDEDIR` so that they're available at build-time.
 * `BT_ENABLE_DOCS`: Enable building HTML and manpages from DocBook-XML.
 * `BT_ENABLE_NLS`: Check for NLS support.
-* `BT_CHECK_MYSQL`: Check for MySQL client libraries.
-* `BT_CHECK_LIBUUID`: Check for the library containing `uuid_compare()`.
-* `BT_CHECK_LIBEDIT`: Check for the library containing `libedit`, which may be included in the source tree.
-* `BT_CHECK_LIBURI`: Build an in-tree copy of `liburi`.
+* `BT_CHECK_MYSQL`, `BT_REQUIRE_MYSQL`: Check for MySQL client libraries.
+* `BT_CHECK_LIBUUID`, `BT_REQUIRE_LIBUUID`: Check for the library containing `uuid_compare()`.
+* `BT_CHECK_LIBEDIT`, `BT_REQUIRE_LIBEDIT`: Check for the library containing `libedit`, which may be included in the source tree.
+* `BT_CHECK_LIBURI`, `BT_REQUIRE_LIBURI`: Build an in-tree copy of `liburi`.

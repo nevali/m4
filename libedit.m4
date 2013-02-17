@@ -14,18 +14,14 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
-AC_DEFUN([BT_CHECK_LIBEDIT],[
+AC_DEFUN([_BT_CHECK_LIBEDIT],[
 have_libedit=no
 local_libedit=no
-test -d libedit && local_libedit=auto
+test -d "$srcdir/libedit" && local_libedit=auto
 AC_ARG_WITH([included_libedit],[AS_HELP_STRING([--with-included-libedit],[build and install the included libedit (default=auto)])],,[with_included_libedit=$local_libedit])
 
 if test x"$with_included_libedit" = x"no" || test x"$with_included_libedit" = x"auto" ; then
-	AC_CHECK_LIB([edit],[el_init],[with_included_libedit=no ; have_libedit=yes ; LIBEDIT_LIBS="-ledit"],[
-		if test x"$with_included_libedit" = x"no" ; then
-			AC_MSG_ERROR([could not find a suitable libedit installation])
-		fi
-	])
+	AC_CHECK_LIB([edit],[el_init],[with_included_libedit=no ; have_libedit=yes ; LIBEDIT_LIBS="-ledit"])
 fi
 
 if test x"$with_included_libedit" = x"yes" || test x"$with_included_libedit" = x"auto" ; then
@@ -36,6 +32,21 @@ if test x"$with_included_libedit" = x"yes" || test x"$with_included_libedit" = x
 	LIBEDIT_SUBDIRS="libedit"
 	AC_SUBST([AM_CPPFLAGS])
 fi
+AC_SUBST([have_libedit])
 AC_SUBST([LIBEDIT_LIBS])
 AC_SUBST([LIBEDIT_SUBDIRS])
+if test x"$have_libedit" = x"yes" ; then
+	AC_DEFINE_UNQUOTED([HAVE_LIBEDIT],[1],[Define if libedit is available])
+fi
+])dnl
+dnl
+AC_DEFUN([BT_CHECK_LIBEDIT],[
+AC_REQUIRE([_BT_CHECK_LIBEDIT])dnl
+])dnl
+dnl
+AC_DEFUN([BT_REQUIRE_LIBEDIT],[
+AC_REQUIRE([_BT_CHECK_LIBEDIT])dnl
+if test x"$have_libedit" = x"no" ; then
+	AC_MSG_ERROR([cannot find required library libedit])
+fi
 ])dnl

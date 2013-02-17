@@ -14,10 +14,27 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
-AC_DEFUN([BT_CHECK_LIBUUID],[
+AC_DEFUN([_BT_CHECK_LIBUUID],[
+have_libuuid=yes
+## On Darwin, and possibly other platforms, libuuid's functions are built
+## into libc.
 AC_CHECK_FUNC([uuid_compare],,[
-	AC_CHECK_LIB([uuid],[uuid_compare],,[
-		AC_MSG_ERROR([cannot locate the library containing uuid_compare()])
-		])
+	AC_CHECK_LIB([uuid],[uuid_compare],,[have_libuuid=no])
 	])
 ])
+AC_SUBST([have_libuuid])
+if test x"$have_libuuid" = x"yes" ; then
+	AC_DEFINE_UNQUOTED([HAVE_LIBUUID],[1],[Define if libuuid is available])
+fi
+
+dnl
+AC_DEFUN([BT_CHECK_LIBUUID],[
+AC_REQUIRE([_BT_CHECK_LIBUUID])dnl
+])dnl
+dnl
+AC_DEFUN([BT_REQUIRE_LIBUUID],[
+AC_REQUIRE([_BT_CHECK_LIBUUID])dnl
+if test x"$have_libuuid" = x"no" ; then
+	AC_MSG_ERROR([cannot find required library libuuid])
+fi
+])dnl

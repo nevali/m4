@@ -67,9 +67,14 @@ AC_ARG_WITH([$1],[AS_HELP_STRING([--with-$1=PATH],[Specify installation prefix o
 dnl If a subdir was specified, look for a bundled tree
 m4_ifval([$2],[
 if test -r "$srcdir/$2/configure" ; then
-	AS_VAR_SET(bt_l_local,[yes])
+	AS_VAR_SET(bt_l_local,[auto])
 fi
-AC_ARG_WITH([included_$1],[AS_HELP_STRING([--without-included-$1],[Don't use a bundled version of $1 if present])],[],[AS_VAR_SET(bt_l_included,$bt_l_local)])
+AC_ARG_WITH([included_$1],[AS_HELP_STRING([--without-included-$1],[Don't use a bundled version of $1 if present])],[
+dnl If --with-included-foo was specified explicitly, skip the external tests
+if test x"$bt_l_local" = x"yes" && test x"$withval" = x"yes" ; then
+	AS_VAR_SET(bt_l_with,[no])
+fi
+],[AS_VAR_SET(bt_l_included,$bt_l_local)])
 if test x"$bt_l_local" = x"no" ; then
 	AS_VAR_SET(bt_l_included,[no])
 fi
@@ -105,6 +110,7 @@ fi
 
 m4_ifval([$2],[
 if ! test x"$bt_l_included" = x"no" ; then
+	AS_VAR_SET(bt_l_have,[yes])
 	AC_CONFIG_SUBDIRS([$2])
 	m4_ifval([$4],[$4])
 fi
@@ -128,9 +134,9 @@ if test x"$bt_l_have" = x"yes" ; then
 		AC_SUBST([AM_CPPFLAGS])
 		AS_VAR_SET([AM_LDFLAGS],["$AM_LDFLAGS $]bt_l_ldflags")
 		AC_SUBST([AM_LDFLAGS])
-		AS_VAR_SET([LIBS],"bt_l_libs[ $LIBS"])
+		AS_VAR_SET([LIBS],"$bt_l_libs[ $LIBS"])
 		AC_SUBST([LIBS])
-		AS_VAR_SET([LOCAL_LIBS],"bt_l_local_libs[ $LOCAL_LIBS"])
+		AS_VAR_SET([LOCAL_LIBS],"$bt_l_local_libs[ $LOCAL_LIBS"])
 		AC_SUBST([LOCAL_LIBS])
 	])
 else

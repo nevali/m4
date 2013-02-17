@@ -14,8 +14,10 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
+dnl Internal: _BT_CHECK_MYSQL([action-if-found],[action-if-not-found])
 AC_DEFUN([_BT_CHECK_MYSQL],[
-have_mysql=no
+AC_REQUIRE([AC_CANONICAL_HOST])dnl
+BT_CHECK_LIB([mysql],,[
 mysql_darwin_fixups=no
 AC_CHECK_PROG([MYSQL_CONFIG],[mysql_config],[mysql_config])
 if ! test x"$MYSQL_CONFIG" = x"" ; then
@@ -31,29 +33,29 @@ dnl On Darwin, the MySQL Community Edition is installed without a proper
 dnl id of the client library dylib. @mysql_darwin_fixups@ is subtituted into
 dnl Makefiles to allow fixups via install_name_tool to be performed
 dnl post-build.
-
-   if test x"$cross_compiling" = x"no" && test x"$host_os" = x"Darwin" && test -r "$MYSQL_LIBDIR/libmysqlclient_r.18.dylib" ; then
-   	  mysql_darwin_fixups=yes
-   fi
+	if test x"$cross_compiling" = x"no" ; then
+		case "$host_os" in
+			darwin*|Darwin*[)]
+				if test -r "$MYSQL_LIBDIR/libmysqlclient_r.18.dylib" ; then
+					mysql_darwin_fixups=yes
+   				fi
+				;;
+		esac
+	fi
 fi
-AC_SUBST([have_mysql])
-AC_SUBST([MYSQL_CONFIG])
-AC_SUBST([MYSQL_CPPFLAGS])
-AC_SUBST([MYSQL_LIBS])
-AC_SUBST([MYSQL_LIBDIR])
 AC_SUBST([mysql_darwin_fixups])
-if test x"$have_mysql" = x"yes" ; then
-	AC_DEFINE_UNQUOTED([WITH_MYSQL],[1],[Define if MySQL is available])
-fi
+AC_SUBST([MYSQL_LIBDIR])
+],[$1],[$2])
 ])dnl
 dnl
+dnl - BT_CHECK_MYSQL([action-if-found],[action-if-not-found])
 AC_DEFUN([BT_CHECK_MYSQL],[
-AC_REQUIRE([_BT_CHECK_MYSQL])dnl
+_BT_CHECK_MYSQL([$1],[$2])
 ])dnl
 dnl
+dnl - BT_CHECK_MYSQL([action-if-found])
 AC_DEFUN([BT_REQUIRE_MYSQL],[
-AC_REQUIRE([_BT_CHECK_MYSQL])dnl
-if test x"$have_mysql" = x"no" ; then
+_BT_CHECK_MYSQL([$1],[
 	AC_MSG_ERROR([cannot locate the MySQL client libraries; check that the mysql_config utility can be found])
-fi
+])
 ])dnl

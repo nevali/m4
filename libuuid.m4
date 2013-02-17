@@ -14,27 +14,24 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
+dnl Internal: _BT_CHECK_LIBUUID([action-if-found],[action-if-not-found])
 AC_DEFUN([_BT_CHECK_LIBUUID],[
+BT_CHECK_LIB([libuuid],,[
 have_libuuid=yes
-## On Darwin, and possibly other platforms, libuuid's functions are built
-## into libc.
 AC_CHECK_FUNC([uuid_compare],,[
-	AC_CHECK_LIB([uuid],[uuid_compare],,[have_libuuid=no])
+	AC_CHECK_LIB([uuid],[uuid_compare],[LIBUUID_LIBS="-luuid"],[have_libuuid=no])
 	])
 ])
-AC_SUBST([have_libuuid])
-if test x"$have_libuuid" = x"yes" ; then
-	AC_DEFINE_UNQUOTED([WITH_LIBUUID],[1],[Define if libuuid is available])
-fi
-
+],,[$1],[$2])
 dnl
+dnl - BT_CHECK_LIBUUID([action-if-found],[action-if-not-found])
 AC_DEFUN([BT_CHECK_LIBUUID],[
-AC_REQUIRE([_BT_CHECK_LIBUUID])dnl
+_BT_CHECK_LIBUUID([libuuid],[$1],[$2])
 ])dnl
 dnl
+dnl - BT_REQUIRE_LIBUUID([action-if-found])
 AC_DEFUN([BT_REQUIRE_LIBUUID],[
-AC_REQUIRE([_BT_CHECK_LIBUUID])dnl
-if test x"$have_libuuid" = x"no" ; then
+_BT_CHECK_LIBUUID([$1],[
 	AC_MSG_ERROR([cannot find required library libuuid])
-fi
+])
 ])dnl

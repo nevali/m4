@@ -29,6 +29,7 @@ BT_CHECK_LIB([libtiff],[$3],[
 			AC_MSG_WARN([cannot find the libtiff library. You can specify an installation prefix to libtiff with --with-libtiff=PREFIX])])
 	fi
 ],[
+	AC_CONFIG_SUBDIRS([$3])
 	LIBTIFF_CPPFLAGS="-I\${top_builddir}/$3/libtiff -I\${top_srcdir}/$3/libtiff"
 	LIBTIFF_LDFLAGS="-L\${top_builddir}/$3/libtiff"
 	LIBTIFF_LOCAL_LIBS="\${top_builddir}/$3/libtiff/libtiff.la"

@@ -111,7 +111,6 @@ fi
 m4_ifval([$2],[
 if ! test x"$bt_l_included" = x"no" ; then
 	AS_VAR_SET(bt_l_have,[yes])
-	AC_CONFIG_SUBDIRS([$2])
 	m4_ifval([$4],[$4])
 fi
 ])dnl

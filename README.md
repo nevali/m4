@@ -27,6 +27,7 @@ The included macros are:
 * `BT_CHECK_LIBUUID`, `BT_REQUIRE_LIBUUID`: Check for the library containing `uuid_compare()`.
 * `BT_CHECK_LIBEDIT`, `BT_REQUIRE_LIBEDIT`: Check for the library containing `libedit`, which may be included in the source tree.
 * `BT_CHECK_LIBURI`, `BT_REQUIRE_LIBURI`: Build an in-tree copy of `liburi`.
+* `BT_CHECK_LIBTIFF`, `BT_REQUIRE_LIBTIFF`: Check for `libtiff`.
 
 In addition, `lib.m4` defines `BT_CHECK_LIB`, a generic framework for
 checking for libraries, including support for dealing with bundled

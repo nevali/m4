@@ -14,28 +14,49 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
+dnl Internal: _BT_CHECK_LIBURI([action-if-exists],[action-if-not-exists],[subdir])
 AC_DEFUN([_BT_CHECK_LIBURI],[
-have_liburi=yes
-AC_CONFIG_SUBDIRS([liburi])
-AM_CPPFLAGS="$AM_CPPFLAGS -I\${top_builddir}/liburi -I\${top_srcdir}/liburi"
-LOCAL_LIBS="$LOCAL_LIBS \${top_builddir}/liburi/liburi.la"
-LIBURI_SUBDIRS="liburi"
-AC_SUBST([have_liburi])
-AC_SUBST([AM_CPPFLAGS])
-AC_SUBST([LOCAL_LIBS])
-AC_SUBST([LIBURI_SUBDIRS])
-if test x"$have_liburi" = x"yes" ; then
-	AC_DEFINE_UNQUOTED([WITH_LIBURI],[1],[Define if liburi is available])
+BT_CHECK_LIB([liburi],[$3],[liburi],[
+AC_CHECK_PROGS([LIBURI_CONFIG],[liburi-config])
+if test -n "$LIBURI_CONFIG" ; then
+	LIBURI_CPPFLAGS="`$LIBURI_CONFIG --cflags`"
+	LIBURI_LIBS="`$LIBURI_CONFIG --libs`"
+	CPPFLAGS="$CPPFLAGS $LIBURI_CPPFLAGS"
+	LIBS="$LIBURI_LIBS $LIBS"
+	AC_CHECK_HEADER([liburi.h],[
+		AC_CHECK_LIB([uri],[uri_create_str],[
+			have_liburi=yes
+		])
+	])
 fi
+],[
+AC_CONFIG_SUBDIRS([LIBURI])
+LIBURI_CPPFLAGS="-I\${top_builddir}/$3 -I\${top_srcdir}/liburi"
+LIBURI_LOCAL_LIBS="\${top_builddir}/$3/liburi.la"
+],[$1],[$2])
 ])dnl
 dnl
+dnl - BT_CHECK_LIBURI([action-if-found],[action-if-not-found])
+dnl Default action is to update AM_CPPFLAGS, AM_LDFLAGS, LIBS and LOCAL_LIBS
+dnl as required, and do nothing if not found
 AC_DEFUN([BT_CHECK_LIBURI],[
-AC_REQUIRE([_BT_CHECK_LIBURI])dnl
+_BT_CHECK_LIBURI([$1],[$2])
 ])dnl
-dnl
+dnl - BT_CHECK_LIBURI_INCLUDED([action-if-found],[action-if-not-found],[subdir=liburi])
+AC_DEFUN([BT_CHECK_LIBURI_INCLUDED],[
+AS_LITERAL_IF([$3],,[AC_DIAGNOSE([syntax],[$0: subdir must be a literal])])dnl
+_BT_CHECK_LIBURI([$1],[$2],m4_ifval([$3],[$3],[uri]))
+])dnl
+dnl - BT_REQUIRE_LIBURI([action-if-found])
 AC_DEFUN([BT_REQUIRE_LIBURI],[
-AC_REQUIRE([_BT_CHECK_LIBURI])dnl
-if test x"$have_liburi" = x"no" ; then
+_BT_CHECK_LIBURI([$1],[
 	AC_MSG_ERROR([cannot find required library liburi])
-fi
+])
+])dnl
+dnl - BT_REQUIRE_LIBURI_INCLUDED([action-if-found],[subdir=liburi])
+AC_DEFUN([BT_REQUIRE_LIBURI_INCLUDED],[
+AS_LITERAL_IF([$2],,[AC_DIAGNOSE([syntax],[$0: subdir passed must be a literal])])dnl
+_BT_CHECK_LIBURI([$1],[
+	AC_MSG_ERROR([cannot find required library liburi])
+],m4_ifval([$2],[$2],[uri]))
 ])dnl

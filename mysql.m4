@@ -17,7 +17,7 @@ m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_MYSQL([action-if-found],[action-if-not-found])
 AC_DEFUN([_BT_CHECK_MYSQL],[
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
-BT_CHECK_LIB([mysql],,[
+BT_CHECK_LIB([mysql],,,[
 mysql_darwin_fixups=no
 AC_CHECK_PROG([MYSQL_CONFIG],[mysql_config],[mysql_config])
 if ! test x"$MYSQL_CONFIG" = x"" ; then
@@ -53,7 +53,7 @@ AC_DEFUN([BT_CHECK_MYSQL],[
 _BT_CHECK_MYSQL([$1],[$2])
 ])dnl
 dnl
-dnl - BT_CHECK_MYSQL([action-if-found])
+dnl - BT_REQUIRE_MYSQL([action-if-found])
 AC_DEFUN([BT_REQUIRE_MYSQL],[
 _BT_CHECK_MYSQL([$1],[
 	AC_MSG_ERROR([cannot locate the MySQL client libraries; check that the mysql_config utility can be found])

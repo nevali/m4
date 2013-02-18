@@ -35,14 +35,18 @@ sub-projects within the source tree.
 
 `BT_CHECK_LIB` is defined as:
 
-	BT_CHECK_LIB(name,[local-subdir],test-code,[use-local-code],
-		[action-if-found],[action-if-not-found])
+	BT_CHECK_LIB(name, [local-subdir], [pkg-config modules], [test-code],
+		[use-local-code], [action-if-found],[action-if-not-found])
 
 `name` is the name of the library, such as `libtiff`, and is used to
 construct variables and help strings.
 
 If `local-subdir` is specified, it is the name of the subdirectory within
 the source tree which will optionally contain a bundled copy of the library.
+
+`pkg-config modules` is a list of `pkg-config` modules which, if specified,
+will be tested for and whose `cflags` and `libs` will be used to populate
+`NAME_CPPFLAGS` and `NAME_LIBS` if found.
 
 `test-code` is a fragment which will test for the presence of the library,
 and set `have_name` to `yes` if it is present (e.g., `have_libtiff=yes`).

@@ -16,7 +16,7 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBTIFF([action-if-found],[action-if-not-found],[localdir])
 AC_DEFUN([_BT_CHECK_LIBTIFF],[
-BT_CHECK_LIB([libtiff],[$3],[
+BT_CHECK_LIB([libtiff],[$3],,[
 	have_libtiff_header=no
 	AC_CHECK_HEADER([tiffio.h],[have_libtiff_header=yes],[
 		if ! test x"$with_libtiff" = x"auto" ; then

@@ -16,7 +16,7 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBUUID([action-if-found],[action-if-not-found])
 AC_DEFUN([_BT_CHECK_LIBUUID],[
-BT_CHECK_LIB([libuuid],,[
+BT_CHECK_LIB([libuuid],,,[
 have_libuuid=yes
 AC_CHECK_FUNC([uuid_compare],,[
 	AC_CHECK_LIB([uuid],[uuid_compare],[LIBUUID_LIBS="-luuid"],[have_libuuid=no])

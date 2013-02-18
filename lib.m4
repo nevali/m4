@@ -12,7 +12,7 @@ dnl  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 dnl  See the License for the specific language governing permissions and
 dnl  limitations under the License.
 dnl
-dnl - BT_CHECK_LIB(name,[local-subdir],test-code,[use-local-code],[action-if-found],[action-if-not-found])
+dnl - BT_CHECK_LIB(name,[local-subdir],[pkg-config modules],local-test-code,[use-local-code],[action-if-found],[action-if-not-found])
 dnl
 dnl test-code is a detection routine; it should set
 dnl   have_name        => yes|no
@@ -29,6 +29,7 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^bt_])dnl
 m4_pattern_forbid([^_BT_])dnl
 AC_DEFUN([BT_CHECK_LIB],[
+AC_REQUIRE([PKG_PROG_PKG_CONFIG])dnl
 
 dnl Save these variables, they shouldn't be overwritten
 old_CPPFLAGS="$CPPFLAGS"
@@ -99,8 +100,22 @@ AS_VAR_SET([LDFLAGS],["$LDFLAGS $]bt_l_ldflags")
 if ! test x"$bt_l_included" = x"yes" ; then
 	if ! test x"$bt_l_with" = x"no" ; then
 
-m4_echo($3)dnl
+m4_ifval([$3],[
+	AC_MSG_CHECKING([for $3 with pkg-config])
+	_PKG_CONFIG(bt_l_cppflags, [cflags], [$3])
+	_PKG_CONFIG(bt_l_libs, [libs], [$3])
+	_PKG_CONFIG([pkg_modversion], [modversion], [$3])
+	if test $pkg_failed = yes ; then
+		AC_MSG_RESULT([no])
+	else
+		AC_MSG_RESULT([yes ($pkg_modversion)])
+		AS_VAR_SET(bt_l_have,[yes])
+	fi
+])
 
+		if test x"$bt_l_have" = x"no" ; then
+			m4_ifval([$4],[$4],true)dnl
+		fi
 	fi
 fi
 
@@ -111,7 +126,7 @@ fi
 m4_ifval([$2],[
 if ! test x"$bt_l_included" = x"no" ; then
 	AS_VAR_SET(bt_l_have,[yes])
-	m4_ifval([$4],[$4])
+	m4_ifval([$5],[$5])
 fi
 ])dnl
 
@@ -128,7 +143,7 @@ AC_SUBST(bt_l_local_libs)
 
 if test x"$bt_l_have" = x"yes" ; then
 	AC_DEFINE_UNQUOTED(m4_join(,[WITH_],bt_uprefix),[1],[Define if $1 is available])
-	m4_ifval([$5],[$5],[
+	m4_ifval([$6],[$6],[
 		AS_VAR_SET([AM_CPPFLAGS],["$AM_CPPFLAGS $]bt_l_cppflags")
 		AC_SUBST([AM_CPPFLAGS])
 		AS_VAR_SET([AM_LDFLAGS],["$AM_LDFLAGS $]bt_l_ldflags")
@@ -139,6 +154,6 @@ if test x"$bt_l_have" = x"yes" ; then
 		AC_SUBST([LOCAL_LIBS])
 	])
 else
-	m4_ifval([$6],[$6],[true])
+	m4_ifval([$7],[$7],[true])
 fi
 ])dnl

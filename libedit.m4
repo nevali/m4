@@ -16,7 +16,7 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBEDIT([action-if-found],[action-if-not-found],[localdir])
 AC_DEFUN([_BT_CHECK_LIBEDIT],[
-BT_CHECK_LIB([libedit],[$3],[
+BT_CHECK_LIB([libedit],[$3],,[
 	AC_CHECK_LIB([edit],[el_init],[have_libedit=yes ; LIBEDIT_LIBS="-ledit"])
 ],[
 	AC_CONFIG_SUBDIRS([$3])

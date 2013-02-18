@@ -30,7 +30,7 @@ if test -n "$LIBURI_CONFIG" ; then
 	])
 fi
 ],[
-AC_CONFIG_SUBDIRS([LIBURI])
+AC_CONFIG_SUBDIRS([$3])
 LIBURI_CPPFLAGS="-I\${top_builddir}/$3 -I\${top_srcdir}/liburi"
 LIBURI_LOCAL_LIBS="\${top_builddir}/$3/liburi.la"
 ],[$1],[$2])
@@ -45,7 +45,7 @@ _BT_CHECK_LIBURI([$1],[$2])
 dnl - BT_CHECK_LIBURI_INCLUDED([action-if-found],[action-if-not-found],[subdir=liburi])
 AC_DEFUN([BT_CHECK_LIBURI_INCLUDED],[
 AS_LITERAL_IF([$3],,[AC_DIAGNOSE([syntax],[$0: subdir must be a literal])])dnl
-_BT_CHECK_LIBURI([$1],[$2],m4_ifval([$3],[$3],[uri]))
+_BT_CHECK_LIBURI([$1],[$2],m4_ifval([$3],[$3],[liburi]))
 ])dnl
 dnl - BT_REQUIRE_LIBURI([action-if-found])
 AC_DEFUN([BT_REQUIRE_LIBURI],[
@@ -58,5 +58,5 @@ AC_DEFUN([BT_REQUIRE_LIBURI_INCLUDED],[
 AS_LITERAL_IF([$2],,[AC_DIAGNOSE([syntax],[$0: subdir passed must be a literal])])dnl
 _BT_CHECK_LIBURI([$1],[
 	AC_MSG_ERROR([cannot find required library liburi])
-],m4_ifval([$2],[$2],[uri]))
+],m4_ifval([$2],[$2],[liburi]))
 ])dnl

@@ -17,12 +17,15 @@ m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBUUID([action-if-found],[action-if-not-found])
 AC_DEFUN([_BT_CHECK_LIBUUID],[
 BT_CHECK_LIB([libuuid],,,[
-have_libuuid=yes
-AC_CHECK_FUNC([uuid_compare],,[
-	AC_CHECK_LIB([uuid],[uuid_compare],[LIBUUID_LIBS="-luuid"],[have_libuuid=no])
+    have_libuuid=yes
+    AC_CHECK_FUNC([uuid_compare],,[
+	    AC_CHECK_LIB([uuid],[uuid_compare],[LIBUUID_LIBS="-luuid"],[have_libuuid=no])
 	])
-])
+    if test x"$have_libuuid" = x"yes" ; then
+        AC_CHECK_HEADER([uuid/uuid.h],,[have_uuid=no])
+    fi
 ],,[$1],[$2])
+])dnl
 dnl
 dnl - BT_CHECK_LIBUUID([action-if-found],[action-if-not-found])
 AC_DEFUN([BT_CHECK_LIBUUID],[

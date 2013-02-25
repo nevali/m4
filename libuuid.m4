@@ -29,7 +29,7 @@ BT_CHECK_LIB([libuuid],,,[
 dnl
 dnl - BT_CHECK_LIBUUID([action-if-found],[action-if-not-found])
 AC_DEFUN([BT_CHECK_LIBUUID],[
-_BT_CHECK_LIBUUID([libuuid],[$1],[$2])
+_BT_CHECK_LIBUUID([$1],[$2])
 ])dnl
 dnl
 dnl - BT_REQUIRE_LIBUUID([action-if-found])

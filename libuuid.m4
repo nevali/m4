@@ -22,7 +22,7 @@ BT_CHECK_LIB([libuuid],,,[
 	    AC_CHECK_LIB([uuid],[uuid_compare],[LIBUUID_LIBS="-luuid"],[have_libuuid=no])
 	])
     if test x"$have_libuuid" = x"yes" ; then
-        AC_CHECK_HEADER([uuid/uuid.h],,[have_uuid=no])
+        AC_CHECK_HEADER([uuid/uuid.h],,[have_libuuid=no])
     fi
 ],,[$1],[$2])
 ])dnl

@@ -102,10 +102,13 @@ if ! test x"$bt_l_included" = x"yes" ; then
 
 m4_ifval([$3],[
 	AC_MSG_CHECKING([for $3 with pkg-config])
+	AS_VAR_SET(bt_l_cppflags)
+	AS_VAR_SET(bt_l_libs)
+	unset pkg_modversion
 	_PKG_CONFIG(bt_l_cppflags, [cflags], [$3])
 	_PKG_CONFIG(bt_l_libs, [libs], [$3])
 	_PKG_CONFIG([pkg_modversion], [modversion], [$3])
-	if test $pkg_failed = yes ; then
+	if test -n "$pkg_failed" ; then
 		AC_MSG_RESULT([no])
 	else
 		AC_MSG_RESULT([yes ($pkg_modversion)])

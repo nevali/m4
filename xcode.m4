@@ -53,6 +53,7 @@ if ! test x"$XCRUN" = x"" ; then
 		test -z "$CXX" && CXX="$XCRUN -sdk $XCSDK clang -x c++"
 		test -z "$CXXCPP" && CXXCPP="$XCRUN -sdk $XCSDK clang -x c++ -E"
 		test -z "$NM" && NM="$XCRUN -sdk $XCSDK nm"
+		test -z "$AR" && AR="$XCRUN -sdk $XCSDK ar"
 		test -z "$RANLIB" && RANLIB="$XCRUN -sdk $XCSDK ranlib"
 		test -z "$AS" && AS="$XCRUN -sdk $XCSDK as"
 	fi

@@ -30,4 +30,6 @@ dir=`eval echo $libdir`
 AC_DEFINE_UNQUOTED([LIBDIR], ["$dir"], [Library installation path])
 dir=`eval echo $includedir`
 AC_DEFINE_UNQUOTED([INCLUDEDIR], ["$dir"], [C headers installation path])
+dir=`eval echo $localstatedir`
+AC_DEFINE_UNQUOTED([LOCALSTATEDIR], ["$dir"], [Local state path])
 ])dnl

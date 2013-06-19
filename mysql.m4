@@ -45,7 +45,7 @@ dnl post-build.
 fi
 AC_SUBST([mysql_darwin_fixups])
 AC_SUBST([MYSQL_LIBDIR])
-],[$1],[$2])
+],,[$1],[$2])
 ])dnl
 dnl
 dnl - BT_CHECK_MYSQL([action-if-found],[action-if-not-found])

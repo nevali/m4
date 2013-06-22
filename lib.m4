@@ -105,9 +105,15 @@ m4_ifval([$3],[
 	AS_VAR_SET(bt_l_cppflags)
 	AS_VAR_SET(bt_l_libs)
 	unset pkg_modversion
-	_PKG_CONFIG(bt_l_cppflags, [cflags], [$3])
-	_PKG_CONFIG(bt_l_libs, [libs], [$3])
+	_PKG_CONFIG(pkg_cppflags, [cflags], [$3])
+	AS_VAR_SET(bt_l_cppflags, $pkg_cv_[]pkg_cppflags)
+
+	_PKG_CONFIG(pkg_libs, [libs], [$3])
+	AS_VAR_SET(bt_l_libs, $pkg_cv_[]pkg_libs)
+	
 	_PKG_CONFIG([pkg_modversion], [modversion], [$3])
+	AS_VAR_SET(pkg_modversion, $pkg_cv_[]pkg_modversion)
+	
 	if test -n "$pkg_failed" ; then
 		AC_MSG_RESULT([no])
 	else

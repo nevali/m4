@@ -23,6 +23,7 @@ if test x"$CURL_CONFIG" = x"" ; then
    AC_CHECK_HEADER([curl/curl.h],[
       AC_CHECK_LIB([curl],[curl_easy_perform],[
 	    have_libcurl=yes
+		LIBCURL_LIBS="-lcurl"
 	  ])
    ])
 else

@@ -51,6 +51,7 @@ m4_ifdef([bt_l_cppflags], [m4_undefine([bt_l_cppflags])])dnl
 m4_ifdef([bt_l_ldflags], [m4_undefine([bt_l_ldflags])])dnl
 m4_ifdef([bt_l_libs], [m4_undefine([bt_l_libs])])dnl
 m4_ifdef([bt_l_local_libs], [m4_undefine([bt_l_local_libs])])dnl
+m4_ifdef([bt_l_installed_libs], [m4_undefine([bt_l_installed_libs])])dnl
 dnl
 m4_define([bt_l_have],[m4_join(,[have_],bt_lprefix)])dnl
 m4_define([bt_l_local],[m4_join(,[local_],bt_lprefix)])dnl
@@ -60,6 +61,7 @@ m4_define([bt_l_cppflags],[m4_join(,bt_uprefix,[_CPPFLAGS])])dnl
 m4_define([bt_l_ldflags],[m4_join(,bt_uprefix,[_LDFLAGS])])dnl
 m4_define([bt_l_libs],[m4_join(,bt_uprefix,[_LIBS])])dnl
 m4_define([bt_l_local_libs],[m4_join(,bt_uprefix,[_LOCAL_LIBS])])dnl
+m4_define([bt_l_installed_libs],[m4_join(,bt_uprefix,[_INSTALLED_LIBS])])dnl
 
 AS_VAR_SET(bt_l_have,[no])
 AS_VAR_SET(bt_l_local,[no])
@@ -104,12 +106,15 @@ m4_ifval([$3],[
 	AC_MSG_CHECKING([for $3 with pkg-config])
 	AS_VAR_SET(bt_l_cppflags)
 	AS_VAR_SET(bt_l_libs)
+	unset pkg_cv_pkg_cppflags
+	unset pkg_cv_pkg_libs
 	unset pkg_modversion
 	_PKG_CONFIG(pkg_cppflags, [cflags], [$3])
 	AS_VAR_SET(bt_l_cppflags, $pkg_cv_[]pkg_cppflags)
 
 	_PKG_CONFIG(pkg_libs, [libs], [$3])
 	AS_VAR_SET(bt_l_libs, $pkg_cv_[]pkg_libs)
+	AS_VAR_SET(bt_l_installed_libs, $pkg_cv_[]pkg_libs)
 	
 	_PKG_CONFIG([pkg_modversion], [modversion], [$3])
 	AS_VAR_SET(pkg_modversion, $pkg_cv_[]pkg_modversion)
@@ -124,6 +129,9 @@ m4_ifval([$3],[
 
 		if test x"$bt_l_have" = x"no" ; then
 			m4_ifval([$4],[$4],true)dnl
+			if test x"$bt_l_installed_libs" = x"" ; then
+				AS_VAR_SET(bt_l_installed_libs,$bt_l_libs)
+			fi
 		fi
 	fi
 fi
@@ -149,6 +157,7 @@ AC_SUBST(bt_l_cppflags)
 AC_SUBST(bt_l_ldflags)
 AC_SUBST(bt_l_libs)
 AC_SUBST(bt_l_local_libs)
+AC_SUBST(bt_l_installed_libs)
 
 if test x"$bt_l_have" = x"yes" ; then
 	AC_DEFINE_UNQUOTED(m4_join(,[WITH_],bt_uprefix),[1],[Define if $1 is available])

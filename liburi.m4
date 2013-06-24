@@ -33,6 +33,7 @@ fi
 AC_CONFIG_SUBDIRS([$3])
 LIBURI_CPPFLAGS="-I\${top_builddir}/$3 -I\${top_srcdir}/liburi"
 LIBURI_LOCAL_LIBS="\${top_builddir}/$3/liburi.la"
+LIBURI_INSTALLED_LIBS="-L${libdir} -luri"
 ],[$1],[$2])
 ])dnl
 dnl

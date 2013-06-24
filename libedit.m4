@@ -22,6 +22,7 @@ BT_CHECK_LIB([libedit],[$3],,[
 	AC_CONFIG_SUBDIRS([$3])
 	LIBEDIT_CPPFLAGS="-I\${top_builddir}/$3/src -I\${top_srcdir}/libedit/src"
 	LIBEDIT_LOCAL_LIBS="\${top_builddir}/$3/src/libedit.la"
+	LIBEDIT_INSTALLED_LIBS="-L${libdir} -ledit"
 ],[$1],[$2])
 ])dnl
 dnl

@@ -33,6 +33,7 @@ BT_CHECK_LIB([libtiff],[$3],,[
 	LIBTIFF_CPPFLAGS="-I\${top_builddir}/$3/libtiff -I\${top_srcdir}/$3/libtiff"
 	LIBTIFF_LDFLAGS="-L\${top_builddir}/$3/libtiff"
 	LIBTIFF_LOCAL_LIBS="\${top_builddir}/$3/libtiff/libtiff.la"
+	LIBTIFF_INSTALLED_LIBS="-L${libdir} -ltiff"
 ],[$1],[$2])
 ])
 dnl - BT_CHECK_LIBTIFF([action-if-found],[action-if-not-found])

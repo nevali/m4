@@ -22,6 +22,7 @@ BT_CHECK_LIB([libjsondata],[$3],,[
 	AC_CONFIG_SUBDIRS([$3])
 	LIBJSONDATA_CPPFLAGS="-I\${top_builddir}/$3 -I\${top_srcdir}/$3"
 	LIBJSONDATA_LOCAL_LIBS="\${top_builddir}/$3/libjsondata.la"
+	LIBJSONDATA_INSTALLED_LIBS="-L${libdir} -ljsondata"
 ],[$1],[$2])
 ])dnl
 dnl

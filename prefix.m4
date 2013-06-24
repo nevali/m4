@@ -14,22 +14,39 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
-AC_DEFUN([BT_DEFINE_PREFIX],[
+AC_DEFUN([_BT_DEFINE_PATH],[
+btv_dir=`eval echo $$2`
+AC_DEFINE_UNQUOTED([$1],["$btv_dir"],[$3])
+])dnl
+dnl
+AC_DEFUN([_BT_SAVE_PATHS],[
+btv_old_prefix="$prefix"
+btv_old_exec_prefix="$exec_prefix"
 if test x"$prefix" = x"NONE" ; then
    prefix="$ac_default_prefix"
 fi
-dir=`eval echo $prefix`
-AC_DEFINE_UNQUOTED([PREFIX], ["$dir"], [Installation prefix])
-
 if test x"$exec_prefix" = x"NONE" ; then
    exec_prefix="$prefix"
 fi
-dir=`eval echo $exec_prefix`
-AC_DEFINE_UNQUOTED([EXEC_PREFIX], ["$dir"], [Platform-specific installation prefix])
-dir=`eval echo $libdir`
-AC_DEFINE_UNQUOTED([LIBDIR], ["$dir"], [Library installation path])
-dir=`eval echo $includedir`
-AC_DEFINE_UNQUOTED([INCLUDEDIR], ["$dir"], [C headers installation path])
-dir=`eval echo $localstatedir`
-AC_DEFINE_UNQUOTED([LOCALSTATEDIR], ["$dir"], [Local state path])
+])dnl
+dnl
+AC_DEFUN([_BT_RESTORE_PATHS],[
+prefix="$btv_old_prefix"
+exec_prefix="$btv_old_exec_prefix"
+])dnl
+dnl
+dnl - BT_DEFINE_PATH([define],[varname],[description])
+AC_DEFUN([BT_DEFINE_PATH],[
+_BT_SAVE_PATHS
+_BT_DEFINE_PATH([$1],[$2],[$3])
+_BT_RESTORE_PATHS
+])dnl
+AC_DEFUN([BT_DEFINE_PREFIX],[
+_BT_SAVE_PATHS
+_BT_DEFINE_PATH([PREFIX],[prefix],[Installation prefix])
+_BT_DEFINE_PATH([EXEC_PREFIX], [exec_prefix], [Platform-specific installation prefix])
+_BT_DEFINE_PATH([LIBDIR], [libdir], [Library installation path])
+_BT_DEFINE_PATH([INCLUDEDIR], [includedir], [C headers installation path])
+_BT_DEFINE_PATH([LOCALSTATEDIR], [localstatedir], [Local state path])
+_BT_RESTORE_PATHS
 ])dnl

@@ -45,6 +45,7 @@ AC_DEFUN([BT_DEFINE_PREFIX],[
 _BT_SAVE_PATHS
 _BT_DEFINE_PATH([PREFIX],[prefix],[Installation prefix])
 _BT_DEFINE_PATH([EXEC_PREFIX], [exec_prefix], [Platform-specific installation prefix])
+_BT_DEFINE_PATH([SYSCONFDIR], [sysconfdir], [System-wide configuration path])
 _BT_DEFINE_PATH([LIBDIR], [libdir], [Library installation path])
 _BT_DEFINE_PATH([INCLUDEDIR], [includedir], [C headers installation path])
 _BT_DEFINE_PATH([LOCALSTATEDIR], [localstatedir], [Local state path])

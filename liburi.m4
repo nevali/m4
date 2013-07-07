@@ -14,7 +14,7 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
-dnl Internal: _BT_CHECK_LIBURI([action-if-exists],[action-if-not-exists],[subdir])
+dnl Internal: _BT_CHECK_LIBURI([action-if-exists],[action-if-not-exists],[subdir],[preconfigured])
 AC_DEFUN([_BT_CHECK_LIBURI],[
 BT_CHECK_LIB([liburi],[$3],[liburi],[
 AC_CHECK_PROGS([LIBURI_CONFIG],[liburi-config])
@@ -30,7 +30,11 @@ if test -n "$LIBURI_CONFIG" ; then
 	])
 fi
 ],[
-AC_CONFIG_SUBDIRS([$3])
+m4_ifval([$4],[
+	AC_MSG_RESULT([skipping configuration of liburi in $3])
+],[
+	AC_CONFIG_SUBDIRS([$3])
+])
 LIBURI_CPPFLAGS="-I\${top_builddir}/$3 -I\${top_srcdir}/liburi"
 LIBURI_LOCAL_LIBS="\${top_builddir}/$3/liburi.la"
 LIBURI_INSTALLED_LIBS="-L${libdir} -luri"
@@ -43,10 +47,10 @@ dnl as required, and do nothing if not found
 AC_DEFUN([BT_CHECK_LIBURI],[
 _BT_CHECK_LIBURI([$1],[$2])
 ])dnl
-dnl - BT_CHECK_LIBURI_INCLUDED([action-if-found],[action-if-not-found],[subdir=liburi])
+dnl - BT_CHECK_LIBURI_INCLUDED([action-if-found],[action-if-not-found],[subdir=liburi],[preconfigured])
 AC_DEFUN([BT_CHECK_LIBURI_INCLUDED],[
 AS_LITERAL_IF([$3],,[AC_DIAGNOSE([syntax],[$0: subdir must be a literal])])dnl
-_BT_CHECK_LIBURI([$1],[$2],m4_ifval([$3],[$3],[liburi]))
+_BT_CHECK_LIBURI([$1],[$2],m4_ifval([$3],[$3],[liburi]),[$4])
 ])dnl
 dnl - BT_REQUIRE_LIBURI([action-if-found])
 AC_DEFUN([BT_REQUIRE_LIBURI],[
@@ -54,10 +58,10 @@ _BT_CHECK_LIBURI([$1],[
 	AC_MSG_ERROR([cannot find required library liburi])
 ])
 ])dnl
-dnl - BT_REQUIRE_LIBURI_INCLUDED([action-if-found],[subdir=liburi])
+dnl - BT_REQUIRE_LIBURI_INCLUDED([action-if-found],[subdir=liburi],[preconfigured])
 AC_DEFUN([BT_REQUIRE_LIBURI_INCLUDED],[
 AS_LITERAL_IF([$2],,[AC_DIAGNOSE([syntax],[$0: subdir passed must be a literal])])dnl
 _BT_CHECK_LIBURI([$1],[
 	AC_MSG_ERROR([cannot find required library liburi])
-],m4_ifval([$2],[$2],[liburi]))
+],m4_ifval([$2],[$2],[liburi]),[$3])
 ])dnl

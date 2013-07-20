@@ -17,21 +17,21 @@ m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBCURL([action-if-found],[action-if-not-found])
 AC_DEFUN([_BT_CHECK_LIBCURL],[
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
-BT_CHECK_LIB([libcurl],,,[
-AC_CHECK_PROG([CURL_CONFIG],[curl-config],[curl-config])
-if test x"$CURL_CONFIG" = x"" ; then
-   AC_CHECK_HEADER([curl/curl.h],[
-      AC_CHECK_LIB([curl],[curl_easy_perform],[
-	    have_libcurl=yes
-		LIBCURL_LIBS="-lcurl"
-	  ])
-   ])
-else
-   have_libcurl=yes
-   LIBCURL_CPPFLAGS=`$CURL_CONFIG --cflags`
-   LIBCURL_LIBS=`$CURL_CONFIG --libs`
-fi
-],,[$1],[$2])
+	BT_CHECK_LIB([libcurl],,,[
+		AC_CHECK_PROG([CURL_CONFIG],[curl-config],[curl-config])
+		if test x"$CURL_CONFIG" = x"" ; then
+		   AC_CHECK_HEADER([curl/curl.h],[
+		      AC_CHECK_LIB([curl],[curl_easy_perform],[
+			    have_libcurl=yes
+				LIBCURL_LIBS="-lcurl"
+			  ])
+		   ])
+		else
+		   have_libcurl=yes
+		   LIBCURL_CPPFLAGS=`$CURL_CONFIG --cflags`
+		   LIBCURL_LIBS=`$CURL_CONFIG --libs`
+		fi
+	],,[$1],[$2])
 ])dnl
 dnl
 dnl - BT_CHECK_LIBCURL([action-if-found],[action-if-not-found])

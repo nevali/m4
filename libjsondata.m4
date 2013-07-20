@@ -16,14 +16,12 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBJSONDATA([action-if-found],[action-if-not-found],[localdir])
 AC_DEFUN([_BT_CHECK_LIBJSONDATA],[
-BT_CHECK_LIB([libjsondata],[$3],,[
-	AC_CHECK_LIB([jsondata],[jd_version],[have_libjsondata=yes ; LIBJSONDATA_LIBS="-ljsondata"])
-],[
-	AC_CONFIG_SUBDIRS([$3])
-	LIBJSONDATA_CPPFLAGS="-I\${top_builddir}/$3 -I\${top_srcdir}/$3"
-	LIBJSONDATA_LOCAL_LIBS="\${top_builddir}/$3/libjsondata.la"
-	LIBJSONDATA_INSTALLED_LIBS="-L${libdir} -ljsondata"
-],[$1],[$2])
+	BT_CHECK_LIB([libjsondata],[$3],,[
+		AC_CHECK_LIB([jsondata],[jd_version],[have_libjsondata=yes ; LIBJSONDATA_LIBS="-ljsondata"])
+	],[
+		LIBJSONDATA_LOCAL_LIBS="${libjsondata_builddir}/libjsondata.la"
+		LIBJSONDATA_INSTALLED_LIBS="-L${libdir} -ljsondata"
+	],[$1],[$2])
 ])dnl
 dnl
 dnl - BT_CHECK_LIBJSONDATA([action-if-found],[action-if-not-found])

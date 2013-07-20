@@ -16,25 +16,24 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBTIFF([action-if-found],[action-if-not-found],[localdir])
 AC_DEFUN([_BT_CHECK_LIBTIFF],[
-BT_CHECK_LIB([libtiff],[$3],,[
-	have_libtiff_header=no
-	AC_CHECK_HEADER([tiffio.h],[have_libtiff_header=yes],[
-		if ! test x"$with_libtiff" = x"auto" ; then
-		AC_MSG_WARN([cannot find the libtiff header tiffio.h. You can specify an installation prefix to libtiff with --with-libtiff=PREFIX])
-		fi])
-	if test x"$have_libtiff_header" = x"yes" ; then
-		have_libtiff=yes
-		AC_CHECK_LIB([tiff],[TIFFOpen],[LIBTIFF_LIBS="-ltiff $LIBTIFF_LIBS"],[
-			have_libtiff=no
-			AC_MSG_WARN([cannot find the libtiff library. You can specify an installation prefix to libtiff with --with-libtiff=PREFIX])])
-	fi
-],[
-	AC_CONFIG_SUBDIRS([$3])
-	LIBTIFF_CPPFLAGS="-I\${top_builddir}/$3/libtiff -I\${top_srcdir}/$3/libtiff"
-	LIBTIFF_LDFLAGS="-L\${top_builddir}/$3/libtiff"
-	LIBTIFF_LOCAL_LIBS="\${top_builddir}/$3/libtiff/libtiff.la"
-	LIBTIFF_INSTALLED_LIBS="-L${libdir} -ltiff"
-],[$1],[$2])
+	BT_CHECK_LIB([libtiff],[$3],,[
+		have_libtiff_header=no
+		AC_CHECK_HEADER([tiffio.h],[have_libtiff_header=yes],[
+			if ! test x"$with_libtiff" = x"auto" ; then
+			AC_MSG_WARN([cannot find the libtiff header tiffio.h. You can specify an installation prefix to libtiff with --with-libtiff=PREFIX])
+			fi])
+		if test x"$have_libtiff_header" = x"yes" ; then
+			have_libtiff=yes
+			AC_CHECK_LIB([tiff],[TIFFOpen],[LIBTIFF_LIBS="-ltiff $LIBTIFF_LIBS"],[
+				have_libtiff=no
+				AC_MSG_WARN([cannot find the libtiff library. You can specify an installation prefix to libtiff with --with-libtiff=PREFIX])])
+		fi
+	],[
+		LIBTIFF_CPPFLAGS="-I${libtiff_builddir}/libtiff -I${libtiff_srcdir}/libtiff"
+		LIBTIFF_LDFLAGS="-L${libtiff_builddir}/libtiff"
+		LIBTIFF_LOCAL_LIBS="${libtiff_builddir}/libtiff/libtiff.la"
+		LIBTIFF_INSTALLED_LIBS="-L${libdir} -ltiff"
+	],[$1],[$2])
 ])
 dnl - BT_CHECK_LIBTIFF([action-if-found],[action-if-not-found])
 dnl Default action is to update AM_CPPFLAGS, AM_LDFLAGS, LIBS and LOCAL_LIBS

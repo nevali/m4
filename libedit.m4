@@ -16,14 +16,13 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBEDIT([action-if-found],[action-if-not-found],[localdir])
 AC_DEFUN([_BT_CHECK_LIBEDIT],[
-BT_CHECK_LIB([libedit],[$3],,[
-	AC_CHECK_LIB([edit],[el_init],[have_libedit=yes ; LIBEDIT_LIBS="-ledit"])
-],[
-	AC_CONFIG_SUBDIRS([$3])
-	LIBEDIT_CPPFLAGS="-I\${top_builddir}/$3/src -I\${top_srcdir}/libedit/src"
-	LIBEDIT_LOCAL_LIBS="\${top_builddir}/$3/src/libedit.la"
-	LIBEDIT_INSTALLED_LIBS="-L${libdir} -ledit"
-],[$1],[$2])
+	BT_CHECK_LIB([libedit],[$3],,[
+		AC_CHECK_LIB([edit],[el_init],[have_libedit=yes ; LIBEDIT_LIBS="-ledit"])
+	],[
+		LIBEDIT_CPPFLAGS="-I${libedit_builddir}/src -I${libedit_srcdir}/src"
+		LIBEDIT_LOCAL_LIBS="${libedit_builddir}/src/libedit.la"
+		LIBEDIT_INSTALLED_LIBS="-L${libdir} -ledit"
+	],[$1],[$2])
 ])dnl
 dnl
 dnl - BT_CHECK_LIBEDIT([action-if-found],[action-if-not-found])

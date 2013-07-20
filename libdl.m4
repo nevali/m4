@@ -16,15 +16,15 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBDL([action-if-found],[action-if-not-found])
 AC_DEFUN([_BT_CHECK_LIBDL],[
-BT_CHECK_LIB([libdl],,,[
-    have_libdl=yes
-	AC_CHECK_LIB([dl],[dlopen],[LIBDL_LIBS="-ldl"],[
-        AC_CHECK_FUNC([dlopen],,[have_libdl=no])
-	])
-    if test x"$have_libdl" = x"yes" ; then
-        AC_CHECK_HEADER([dlfcn.h],,[have_libdl=no])
-    fi
-],,[$1],[$2])
+	BT_CHECK_LIB([libdl],,,[
+	    have_libdl=yes
+		AC_CHECK_LIB([dl],[dlopen],[LIBDL_LIBS="-ldl"],[
+	        AC_CHECK_FUNC([dlopen],,[have_libdl=no])
+		])
+	    if test x"$have_libdl" = x"yes" ; then
+	        AC_CHECK_HEADER([dlfcn.h],,[have_libdl=no])
+	    fi
+	],,[$1],[$2])
 ])dnl
 dnl
 dnl - BT_CHECK_LIBDL([action-if-found],[action-if-not-found])

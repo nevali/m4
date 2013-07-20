@@ -16,29 +16,24 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBURI([action-if-exists],[action-if-not-exists],[subdir],[preconfigured])
 AC_DEFUN([_BT_CHECK_LIBURI],[
-BT_CHECK_LIB([liburi],[$3],[liburi],[
-AC_CHECK_PROGS([LIBURI_CONFIG],[liburi-config])
-if test -n "$LIBURI_CONFIG" ; then
-	LIBURI_CPPFLAGS="`$LIBURI_CONFIG --cflags`"
-	LIBURI_LIBS="`$LIBURI_CONFIG --libs`"
-	CPPFLAGS="$CPPFLAGS $LIBURI_CPPFLAGS"
-	LIBS="$LIBURI_LIBS $LIBS"
-	AC_CHECK_HEADER([liburi.h],[
-		AC_CHECK_LIB([uri],[uri_create_str],[
-			have_liburi=yes
-		])
-	])
-fi
-],[
-m4_ifval([$4],[
-	AC_MSG_RESULT([skipping configuration of liburi in $3])
-],[
-	AC_CONFIG_SUBDIRS([$3])
-])
-LIBURI_CPPFLAGS="-I\${top_builddir}/$3 -I\${top_srcdir}/liburi"
-LIBURI_LOCAL_LIBS="\${top_builddir}/$3/liburi.la"
-LIBURI_INSTALLED_LIBS="-L${libdir} -luri"
-],[$1],[$2])
+	m4_ifval([$4],[libcontainer_configured=yes])
+	BT_CHECK_LIB([liburi],[$3],[liburi],[
+		AC_CHECK_PROGS([LIBURI_CONFIG],[liburi-config])
+		if test -n "$LIBURI_CONFIG" ; then
+			LIBURI_CPPFLAGS="`$LIBURI_CONFIG --cflags`"
+			LIBURI_LIBS="`$LIBURI_CONFIG --libs`"
+			CPPFLAGS="$CPPFLAGS $LIBURI_CPPFLAGS"
+			LIBS="$LIBURI_LIBS $LIBS"
+			AC_CHECK_HEADER([liburi.h],[
+				AC_CHECK_LIB([uri],[uri_create_str],[
+					have_liburi=yes
+				])
+			])
+		fi
+	],[
+		LIBURI_LOCAL_LIBS="${liburi_builddir}/liburi.la"
+		LIBURI_INSTALLED_LIBS="-L${libdir} -luri"
+	],[$1],[$2])
 ])dnl
 dnl
 dnl - BT_CHECK_LIBURI([action-if-found],[action-if-not-found])

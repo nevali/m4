@@ -18,9 +18,9 @@ dnl Internal: _BT_CHECK_LIBCONTAINER([action-if-exists],[action-if-not-exists],[
 AC_DEFUN([_BT_CHECK_LIBCONTAINER],[
 	m4_ifval([$4],[libcontainer_configured=yes])
 	dnl libcontainer incorporates liburi and jsondata
-	m4_ifval([$4],[
-		BT_CHECK_LIBURI_INCLUDED(,,[$4/liburi])
-		BT_CHECK_LIBJSONDATA_INCLUDED(,,[$4/jsondata])
+	m4_ifval([$3],[
+		BT_CHECK_LIBURI_INCLUDED(,,[$3/liburi])
+		BT_CHECK_LIBJSONDATA_INCLUDED(,,[$3/jsondata])
 	],[
 		BT_CHECK_LIBURI
 		BT_CHECK_LIBJSONDATA

@@ -233,13 +233,17 @@ if ! test x"$bt_l_included" = x"no" ; then
 		fi
 	])
 	AS_VAR_SET(bt_l_configured,[yes])
-	if ! test x"$bt_l_abs_srcdir" ; then
-		AS_VAR_SET(bt_l_abs_srcdir,[`eval echo $bt_l_srcdir/$2`])
+	if test x"$bt_l_abs_srcdir" = x"" ; then
+		top_builddir="."
+		top_srcdir="$srcdir"
+		AS_VAR_SET(bt_l_abs_srcdir,[`eval echo $bt_l_srcdir`])
 		AS_VAR_SET(bt_l_abs_srcdir,[`cd $bt_l_abs_srcdir && pwd`])
 		export bt_l_abs_srcdir
-		AS_VAR_SET(bt_l_abs_builddir,[`eval echo $bt_l_builddir/$2`])
+		AS_VAR_SET(bt_l_abs_builddir,[`eval echo $bt_l_builddir`])
 		AS_VAR_SET(bt_l_abs_builddir,[`cd $bt_l_abs_builddir && pwd`])
 		export bt_l_abs_builddir
+		unset top_builddir
+		unset top_srcdir
 	fi
 fi
 

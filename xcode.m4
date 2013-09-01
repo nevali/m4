@@ -29,9 +29,7 @@ if ! test x"$XCRUN" = x"" ; then
 	else
 		AC_MSG_RESULT([$XCDEVTOOLS])
 		AC_MSG_CHECKING([which Xcode SDK to use])
-		AC_ARG_WITH([sdk],[
-			AS_HELP_STRING([--with-sdk=SDKNAME],[specify name or path of Xcode SDK to use])
-			],[XCSDK="$withval"],[
+		AC_ARG_WITH([sdk],[AS_HELP_STRING([--with-sdk=SDKNAME],[specify name or path of Xcode SDK to use])],[XCSDK="$withval"],[
 			case "$host" in
 				arm*-apple-darwin*)
 					XCSDK=iphoneos

@@ -17,23 +17,33 @@ m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBSQL([action-if-exists],[action-if-not-exists],[subdir],[preconfigured])
 AC_DEFUN([_BT_CHECK_LIBSQL],[
 	m4_ifval([$4],[libsql_configured=yes])	
-	BT_CHECK_LIB([libsql],[$3],[libsql],[
-		AC_CHECK_PROGS([LIBSQL_CONFIG],[libsql-config])
-		if test -n "$LIBSQL_CONFIG" ; then
-			LIBSQL_CPPFLAGS="`$LIBSQL_CONFIG --cflags`"
-			LIBSQL_LIBS="`$LIBSQL_CONFIG --libs`"
-			CPPFLAGS="$CPPFLAGS $LIBSQL_CPPFLAGS"
-			LIBS="$LIBSQL_LIBS $LIBS"
-			AC_CHECK_HEADER([libsql.h],[
-				AC_CHECK_LIB([sql],[sql_connect],[
-					have_libsql=yes
-				])
-			])
-		fi
+	dnl libsql incorporates liburi
+	m4_ifval([$3],[
+		BT_CHECK_LIBURI_INCLUDED(,,[$3/liburi])
 	],[
-		LIBSQL_LOCAL_LIBS="${libsql_builddir}/libsql.la"
-		LIBSQL_INSTALLED_LIBS="-L${libdir} -lsql"
-	],[$1],[$2])
+		BT_CHECK_LIBURI
+	])
+	if test x"$have_liburi" = x"yes" ; then
+		BT_CHECK_LIB([libsql],[$3],[libsql],[
+			AC_CHECK_PROGS([LIBSQL_CONFIG],[libsql-config])
+			if test -n "$LIBSQL_CONFIG" ; then
+				LIBSQL_CPPFLAGS="`$LIBSQL_CONFIG --cflags`"
+				LIBSQL_LIBS="`$LIBSQL_CONFIG --libs`"
+				CPPFLAGS="$CPPFLAGS $LIBSQL_CPPFLAGS"
+				LIBS="$LIBSQL_LIBS $LIBS"
+				AC_CHECK_HEADER([libsql.h],[
+					AC_CHECK_LIB([sql],[sql_connect],[
+						have_libsql=yes
+					])
+				])
+			fi
+		],[
+			LIBSQL_LOCAL_LIBS="${libsql_builddir}/libsql.la"
+			LIBSQL_INSTALLED_LIBS="-L${libdir} -lsql"
+		],[$1],[$2])
+	else
+		m4_ifval([$2],[$2],true)
+	fi
 ])dnl
 dnl
 dnl - BT_CHECK_LIBSQL([action-if-found],[action-if-not-found])

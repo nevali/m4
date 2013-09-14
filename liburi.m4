@@ -16,7 +16,7 @@ m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBURI([action-if-exists],[action-if-not-exists],[subdir],[preconfigured])
 AC_DEFUN([_BT_CHECK_LIBURI],[
-	m4_ifval([$4],[libcontainer_configured=yes])
+	m4_ifval([$4],[liburi_configured=yes])
 	BT_CHECK_LIB([liburi],[$3],[liburi],[
 		AC_CHECK_PROGS([LIBURI_CONFIG],[liburi-config])
 		if test -n "$LIBURI_CONFIG" ; then

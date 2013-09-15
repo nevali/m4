@@ -85,8 +85,9 @@ dnl If we, or a parent configure script, previously configured this
 dnl dependency in-tree, use the existing values
 
 dnl If $foo_abs_srcdir is set but $foo_srcdir is not, a parent
-dnl script previously configured the package. Perform this only if $5
-dnl (use-local-code) is set
+dnl script previously configured the package. Perform this only if
+dnl use-local-code is set
+
 m4_ifval([$5],[
 if test x"$bt_l_srcdir" = x"" ; then
 	if ! test x"$bt_l_abs_srcdir" = x"" ; then
@@ -200,7 +201,7 @@ if ! test x"$bt_l_included" = x"yes" ; then
 		dnl If the pkg-config test didn't run or failed and specific
 		dnl test code was provided, attempt to use that
 		if test x"$bt_l_have" = x"no" ; then
-			m4_ifval([$4],[$4])
+			m4_ifvaln([$4],[$4],[])
 			if test x"$bt_l_installed_libs" = x"" ; then
 				AS_VAR_SET(bt_l_installed_libs,$bt_l_libs)
 			fi
@@ -226,12 +227,12 @@ if ! test x"$bt_l_included" = x"no" ; then
 	dnl Set default FOO_CPPFLAGS and FOO_LDFLAGS
 	AS_VAR_SET(bt_l_cppflags,["-I$]bt_l_srcdir[ -I$]bt_l_builddir["])
 	AS_VAR_SET(bt_l_ldflags,["-L$]bt_l_srcdir[ -L$]bt_l_builddir["])
-	m4_ifval([$5],[$5])
+	m4_ifvaln([$5],[$5],[])
 	m4_ifval([$2],[
 		if test x"$bt_l_configured" = x"" ; then
 			AC_CONFIG_SUBDIRS([$2])
 		fi
-	])
+	],[])
 	AS_VAR_SET(bt_l_configured,[yes])
 	if test x"$bt_l_abs_srcdir" = x"" ; then
 		top_builddir="."
@@ -264,7 +265,7 @@ dnl If the end result was that $have_foo is yes, define a macro indicating
 dnl as much and execute action-if-found (or use the default implementation)
 if test x"$bt_l_have" = x"yes" ; then
 	AC_DEFINE_UNQUOTED(m4_join(,[WITH_],bt_uprefix),[1],[Define if $1 is available])
-	m4_ifval([$6],[$6],[
+	m4_ifvaln([$6],[$6],[
 		AS_VAR_SET([AM_CPPFLAGS],["$AM_CPPFLAGS $]bt_l_cppflags")
 		AC_SUBST([AM_CPPFLAGS])
 		AS_VAR_SET([AM_LDFLAGS],["$AM_LDFLAGS $]bt_l_ldflags")
@@ -276,6 +277,6 @@ if test x"$bt_l_have" = x"yes" ; then
 	])
 else
 	dnl Otherwise, execute the action-if-not-found
-	m4_ifval([$7],[$7],[true])
+	m4_ifvaln([$7],[$7],[true])
 fi
 ])dnl

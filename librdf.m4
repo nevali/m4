@@ -17,7 +17,7 @@ m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBRDF([action-if-exists],[action-if-not-exists],[subdir],[preconfigured])
 AC_DEFUN([_BT_CHECK_LIBRDF],[
 	m4_ifval([$4],[librdf_configured=yes])
-	BT_CHECK_LIB([librdf],[$3],[librdf],[
+	BT_CHECK_LIB([librdf],[$3],[redland],[
 		AC_CHECK_PROGS([REDLAND_CONFIG],[redland-config])
 		if test -n "$REDLAND_CONFIG" ; then
 			LIBRDF_CPPFLAGS="`$REDLAND_CONFIG --cflags`"

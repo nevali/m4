@@ -17,6 +17,8 @@ m4_pattern_forbid([^_BT_])dnl
 AC_DEFUN([_BT_DEFINE_PATH],[
 btv_dir=`eval echo $$2`
 AC_DEFINE_UNQUOTED([$1],["$btv_dir"],[$3])
+[$1]="$btv_dir"
+AC_SUBST([$1])
 ])dnl
 dnl
 AC_DEFUN([_BT_SAVE_PATHS],[
@@ -49,5 +51,7 @@ _BT_DEFINE_PATH([SYSCONFDIR], [sysconfdir], [System-wide configuration path])
 _BT_DEFINE_PATH([LIBDIR], [libdir], [Library installation path])
 _BT_DEFINE_PATH([INCLUDEDIR], [includedir], [C headers installation path])
 _BT_DEFINE_PATH([LOCALSTATEDIR], [localstatedir], [Local state path])
+_BT_DEFINE_PATH([BINDIR], [bindir], [Binaries installation path])
+_BT_DEFINE_PATH([SBINDIR], [sbindir], [System binaries installation path])
 _BT_RESTORE_PATHS
 ])dnl

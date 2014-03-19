@@ -12,4 +12,4 @@
 ##  See the License for the specific language governing permissions and
 ##  limitations under the License.
 
-EXTRA_DIST = README.md *.m4
+EXTRA_DIST = README.md get-version.sh *.m4

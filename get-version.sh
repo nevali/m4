@@ -25,25 +25,25 @@ if `git rev-parse --git-dir >/dev/null 2>&1` ; then
 	if [ -z "$HEAD" ] ; then
 		echo "No commits yet" >&2
 	else
-		tags="`git show-ref --head --dereference --tags | cut -f2 -d' '`"
+		tags="`git describe --tags --exact-match $HEAD 2>/dev/null`"
 		vertag=""
 		if [ -n "$tags" ] ; then
 			for tag in $tags ; do
 				case "$tag" in
-					refs/tags/upstream/[0-9]*)
-						vertag="`echo $tag | sed -e 's!^refs/tags/upstream/!!' -e 's!-.*$!!'`"
+					upstream/[0-9]*)
+						vertag="`echo $tag | sed -e 's!^upstream/!!' -e 's!-.*$!!'`"
 						;;
-					refs/tags/debian/[0-9]*)
-						vertag="`echo $tag | sed -e 's!^refs/tags/debian/!!' -e 's!-.*$!!'`"
+					debian/[0-9]*)
+						vertag="`echo $tag | sed -e 's!^debian/!!' -e 's!-.*$!!'`"
 						;;
-					refs/tags/[0-9]*)
-						vertag="`echo $tag | sed -e 's!^refs/tags/!!' -e 's!-.*$!!'`"
+					[0-9]*)
+						vertag="`echo $tag | sed -e 's!-.*$!!'`"
 						;;
-					refs/tags/r[0-9]*)
-						vertag="`echo $tag | sed -e 's!^refs/tags/r!!' -e 's!-.*$!!'`"
+					r[0-9]*)
+						vertag="`echo $tag | sed -e 's!^r!!' -e 's!-.*$!!'`"
 						;;
-					refs/tags/v[0-9]*)
-						vertag="`echo $tag | sed -e 's!^refs/tags/v!!' -e 's!-.*$!!'`"
+					v[0-9]*)
+						vertag="`echo $tag | sed -e 's!^v!!' -e 's!-.*$!!'`"
 						;;
 				esac
 			done

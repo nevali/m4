@@ -61,4 +61,4 @@ fi
 [ -z "$version" ] && [ -r .release ] && version="`cat .release`"
 [ -z "$version" ] && version="0.0"
 
-printf "%s%s%s\n" "$version" "$suffix" "$dirty"
+printf "%s%s%s" "$version" "$suffix" "$dirty"

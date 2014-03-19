@@ -23,7 +23,8 @@ if `git rev-parse --git-dir >/dev/null 2>&1` ; then
 	HEAD=`git rev-parse HEAD 2>/dev/null | cut -c1-7`
 	[ x"$HEAD" = x"HEAD" ] && HEAD=""
 	if [ -z "$HEAD" ] ; then
-		echo "No commits yet" >&2
+		suffix="~$now"
+	    dirty=".dirty"
 	else
 		tags="`git describe --tags --exact-match $HEAD 2>/dev/null`"
 		vertag=""

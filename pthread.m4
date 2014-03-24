@@ -15,10 +15,17 @@ dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
 AC_DEFUN([BT_REQUIRE_PTHREAD],[
+	PTHREAD_LIBS=""
+	PTHREAD_LOCAL_LIBS=""
+	PTHREAD_INSTALLED_LIBS=""
 	AC_CHECK_LIB([pthread],[pthread_key_create],,[
+		PTHREAD_LIBS="-lpthread"
 		AC_CHECK_FUNC([pthread_key_create],,[
 			AC_MSG_ERROR([cannot locate the library providing POSIX threads])
 		])
 	])
 	AC_CHECK_HEADER([pthread.h],,[cannot locate the header providing POSIX threads])
+	AC_SUBST([PTHREAD_LIBS])
+	AC_SUBST([PTHREAD_LOCAL_LIBS])
+	AC_SUBST([PTHREAD_INSTALLED_LIBS])
 ])

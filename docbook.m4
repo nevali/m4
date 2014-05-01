@@ -18,6 +18,7 @@ AC_DEFUN([BT_BUILD_DOCS],[
 AC_ARG_ENABLE([docs],[AS_HELP_STRING([--disable-docs],[disable re-building documentation (default=auto)])],[build_docs=$enableval],[build_docs=auto])
 XML2MAN=true
 XML2HTML=true
+XSLTFILES=''
 if test x"$build_docs" = x"yes" || test x"$build_docs" = x"auto" ; then
    AC_CHECK_PROGS([XSLTPROC],[xsltproc],[false])
    if test x"$XSLTPROC" = x"false" ; then
@@ -34,11 +35,24 @@ if test x"$build_docs" = x"yes" || test x"$build_docs" = x"auto" ; then
 		-param man.authors.section.enabled 0 \
 		-param man.copyright.section.enabled 0 \
 		http://docbook.sourceforge.net/release/xsl-ns/current/manpages/docbook.xsl'
-	  XML2HTML='${XSLTPROC} -nonet \
+	  if test x"$use_docbook_html5" = x"yes" ; then
+	    if test -d "$srcdir/docbook-html5" ; then
+		  XSLTFILES='$(top_srcdir)/docbook-html5/docbook-html5.xsl \
+$(top_srcdir)/docbook-html5/doc.xsl \
+$(top_srcdir)/docbook-html5/block.xsl \
+$(top_srcdir)/docbook-html5/inline.xsl \
+$(top_srcdir)/docbook-html5/toc.xsl'
+		  XML2HTML="\${XSLTPROC} --nonet --xinclude \$(XML2HTMLFLAGS) -o \$""@ \${top_srcdir}/docbook-html5/docbook-html5.xsl"
+		else
+		  XML2HTML="\${XSLTPROC} --xinclude \$(XML2HTMLFLAGS) -o \$""@ http://bbcarchdev.github.io/docbook-html5/docbook-html5.xsl"
+		fi
+	  else
+	    XML2HTML='${XSLTPROC} -nonet \
 	    -param docbook.css.link 0 \
 		-param generate.css.header 1 \
 		-param funcsynopsis.style ansi \
 	    http://docbook.sourceforge.net/release/xsl-ns/current/xhtml5/docbook.xsl'
+	  fi
    fi
 else
    build_docs=no

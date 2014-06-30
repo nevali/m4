@@ -14,9 +14,9 @@ dnl  limitations under the License.
 dnl
 m4_pattern_forbid([^BT_])dnl
 m4_pattern_forbid([^_BT_])dnl
-dnl - BT_ENABLE_POSIX([version=200112L])
+dnl - BT_ENABLE_POSIX([version=200809L])
 AC_DEFUN([BT_ENABLE_POSIX],[
-AC_DEFINE_UNQUOTED([_POSIX_C_SOURCE],m4_ifval([$1],[$1],[200112L]),[This application requires POSIX facilities])
+AC_DEFINE_UNQUOTED([_POSIX_C_SOURCE],m4_ifval([$1],[$1],[200809L]),[This application requires POSIX facilities])
 ])
 dnl - BT_ENABLE_XSI([version=600])
 AC_DEFUN([BT_ENABLE_XSI],[

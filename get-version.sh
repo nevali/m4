@@ -1,5 +1,7 @@
 #! /bin/sh
 
+## Copyright 2014 BBC.
+##
 ## Copyright 2014 Mo McRoberts.
 ##
 ##  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,12 @@
 ##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ##  See the License for the specific language governing permissions and
 ##  limitations under the License.
+
+## If we are autobuilding, use the supplied version
+if ! test x"$GIT_BUILD_VERSION" = x"" ; then
+	echo -n "$GIT_BUILD_VERSION"
+	exit 0
+fi
 
 version=""
 suffix=""

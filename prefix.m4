@@ -51,6 +51,7 @@ _BT_DEFINE_PATH([SYSCONFDIR], [sysconfdir], [System-wide configuration path])
 _BT_DEFINE_PATH([LIBDIR], [libdir], [Library installation path])
 _BT_DEFINE_PATH([INCLUDEDIR], [includedir], [C headers installation path])
 _BT_DEFINE_PATH([LOCALSTATEDIR], [localstatedir], [Local state path])
+_BT_DEFINE_PATH([DATAROOTDIR], [datarootdir], [Shared resources path])
 _BT_DEFINE_PATH([BINDIR], [bindir], [Binaries installation path])
 _BT_DEFINE_PATH([SBINDIR], [sbindir], [System binaries installation path])
 _BT_RESTORE_PATHS

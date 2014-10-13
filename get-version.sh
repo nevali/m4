@@ -16,6 +16,18 @@
 ##  See the License for the specific language governing permissions and
 ##  limitations under the License.
 
+## To use this script, structure your AC_INIT as follows:
+## AC_INIT([package-name],m4_esyscmd([/bin/sh m4/get-version.sh]),[bug-report],[tar-name],[url])
+
+## Always use a .release file if present
+if test -r .release ; then
+	version="`head -1 .release`"
+	if ! test x"$version" = x"" ; then
+		printf "$s" "$version"
+		exit 0
+	fi
+fi
+
 ## If we are autobuilding, use the supplied version
 if ! test x"$GIT_BUILD_VERSION" = x"" ; then
 	echo -n "$GIT_BUILD_VERSION"
@@ -67,7 +79,6 @@ if `git rev-parse --git-dir >/dev/null 2>&1` ; then
 	fi
 fi
 
-[ -z "$version" ] && [ -r .release ] && version="`cat .release`"
 [ -z "$version" ] && version="0.0"
 
 printf "%s%s%s" "$version" "$suffix" "$dirty"

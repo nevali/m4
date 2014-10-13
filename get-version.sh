@@ -23,7 +23,7 @@
 if test -r .release ; then
 	version="`head -1 .release`"
 	if ! test x"$version" = x"" ; then
-		printf "$s" "$version"
+		printf "%s" "$version"
 		exit 0
 	fi
 fi

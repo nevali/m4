@@ -180,6 +180,7 @@ if ! test x"$bt_l_included" = x"yes" ; then
 			unset pkg_cv_pkg_cppflags
 			unset pkg_cv_pkg_libs
 			unset pkg_modversion
+			unset pkg_failed
 			_PKG_CONFIG(pkg_cppflags, [cflags], [$3])
 			AS_VAR_SET(bt_l_cppflags, $pkg_cv_[]pkg_cppflags)
 

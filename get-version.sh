@@ -1,5 +1,7 @@
 #! /bin/sh
 
+## Copyright 2014 BBC.
+##
 ## Copyright 2014 Mo McRoberts.
 ##
 ##  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +15,24 @@
 ##  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ##  See the License for the specific language governing permissions and
 ##  limitations under the License.
+
+## To use this script, structure your AC_INIT as follows:
+## AC_INIT([package-name],m4_esyscmd([/bin/sh m4/get-version.sh]),[bug-report],[tar-name],[url])
+
+## Always use a .release file if present
+if test -r .release ; then
+	version="`head -1 .release`"
+	if ! test x"$version" = x"" ; then
+		printf "%s" "$version"
+		exit 0
+	fi
+fi
+
+## If we are autobuilding, use the supplied version
+if ! test x"$GIT_BUILD_VERSION" = x"" ; then
+	echo -n "$GIT_BUILD_VERSION"
+	exit 0
+fi
 
 version=""
 suffix=""
@@ -59,7 +79,6 @@ if `git rev-parse --git-dir >/dev/null 2>&1` ; then
 	fi
 fi
 
-[ -z "$version" ] && [ -r .release ] && version="`cat .release`"
 [ -z "$version" ] && version="0.0"
 
 printf "%s%s%s" "$version" "$suffix" "$dirty"

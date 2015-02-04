@@ -1,3 +1,7 @@
+dnl Author: Mo McRoberts <mo.mcroberts@bbc.co.uk>
+dnl
+dnl Copyright (c) 2015 BBC.
+
 dnl Copyright 2012-2013 Mo McRoberts.
 dnl
 dnl  Licensed under the Apache License, Version 2.0 (the "License");

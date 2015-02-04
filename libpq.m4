@@ -20,6 +20,13 @@ dnl Internal: _BT_CHECK_LIBPQ([action-if-exists],[action-if-not-exists],[subdir]
 AC_DEFUN([_BT_CHECK_LIBPQ],[
 	m4_ifval([$4],[libpq_configured=yes])	
 	BT_CHECK_LIB([libpq],[$3],[libpq],[
+		AC_CHECK_PROG([PG_CONFIG],[pg_config],[pg_config])
+		if ! test x"$PG_CONFIG" = x"" ; then
+			have_libpq=yes
+			LIBPQ_CPPFLAGS="-I`$PG_CONFIG --includedir`"
+			LIBPQ_LIBDIR="-L`$PG_CONFIG --libdir`"
+			LIBPQ_LIBS="-lpq"
+		fi
 	],[
 		LIBPQ_LOCAL_LIBS="${libpq_builddir}/libpq.la"
 		LIBPQ_INSTALLED_LIBS="-L${libdir} -lpq"

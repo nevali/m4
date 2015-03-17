@@ -40,7 +40,7 @@ AC_DEFUN([_BT_CHECK_LIBTWINE],[
 		if test x"$pkg_modversion" = x"" ; then
 			twinemoduledir='${libdir}/twine'
 		else
-			_PKG_CONFIG([moduledir],[variable=moduledir],[libquilt])
+			_PKG_CONFIG([moduledir],[variable=moduledir],[libtwine])
 			AS_VAR_SET([twinemoduledir],$pkg_cv_[]moduledir)
 		fi
 		AC_SUBST([twinemoduledir])

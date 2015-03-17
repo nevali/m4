@@ -42,6 +42,9 @@ AC_DEFUN([_BT_CHECK_LIBQUILT],[
 		else
 			_PKG_CONFIG([moduledir],[variable=moduledir],[libquilt])
 			AS_VAR_SET([quiltmoduledir],$pkg_cv_[]moduledir)
+			if test x"$twinemoduledir" = x"" ; then
+				AC_MSG_ERROR([libtwine.pc does not define moduledir])
+			fi
 		fi
 		AC_SUBST([quiltmoduledir])
 		AC_MSG_RESULT([$quiltmoduledir])

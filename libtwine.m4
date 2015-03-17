@@ -42,6 +42,9 @@ AC_DEFUN([_BT_CHECK_LIBTWINE],[
 		else
 			_PKG_CONFIG([moduledir],[variable=moduledir],[libtwine])
 			AS_VAR_SET([twinemoduledir],$pkg_cv_[]moduledir)
+			if test x"$twinemoduledir" = x"" ; then
+				AC_MSG_ERROR([libtwine.pc does not define moduledir])
+			fi
 		fi
 		AC_SUBST([twinemoduledir])
 		AC_MSG_RESULT([$twinemoduledir])

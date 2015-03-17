@@ -35,7 +35,18 @@ AC_DEFUN([_BT_CHECK_LIBTWINE],[
 	],[
 		LIBTWINE_LOCAL_LIBS="${libtwine_builddir}/libtwine.la"
 		LIBTWINE_INSTALLED_LIBS="-L${libdir} -ltwine"
-	],[$1],[$2])
+	],[
+		AC_MSG_CHECKING([where Twine modules should be installed])
+		if test x"$pkg_modversion" = x"" ; then
+			twinemoduledir='${libdir}/twine'
+		else
+			_PKG_CONFIG([moduledir],[variable=moduledir],[libquilt])
+			AS_VAR_SET([twinemoduledir],$pkg_cv_[]moduledir)
+		fi
+		AC_SUBST([twinemoduledir])
+		AC_MSG_RESULT([$twinemoduledir])
+		$1
+	],[$2])
 ])dnl
 dnl
 dnl - BT_CHECK_LIBTWINE([action-if-found],[action-if-not-found])

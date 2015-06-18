@@ -244,6 +244,12 @@ if ! test x"$bt_l_included" = x"no" ; then
 		AS_VAR_SET(bt_l_abs_builddir,[`eval echo $bt_l_builddir`])
 		AS_VAR_SET(bt_l_abs_builddir,[`cd $bt_l_abs_builddir && pwd`])
 		export bt_l_abs_builddir
+		if test x"$PKG_CONFIG_PATH" = x"" ; then
+			PKG_CONFIG_PATH="$bt_l_abs_builddir"
+		else
+			PKG_CONFIG_PATH="$bt_l_abs_builddir:$PKG_CONFIG_PATH"
+		fi
+		export PKG_CONFIG_PATH
 		unset top_builddir
 		unset top_srcdir
 	fi

@@ -17,7 +17,16 @@ m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBQPID_PROTON([action-if-found],[action-if-not-found])
 AC_DEFUN([_BT_CHECK_LIBQPID_PROTON],[
 	AC_REQUIRE([AC_CANONICAL_HOST])dnl
-	BT_CHECK_LIB([libqpid_proton],,[libqpid-proton],,,[$1],[$2])
+	BT_CHECK_LIB([libqpid_proton],,[libqpid-proton],[
+
+        AC_CHECK_LIB([qpid-proton],[pn_connect],[
+            AC_CHECK_HEADER([proton/message.h],[
+				 LIBQPID_PROTON_LIBS="-lqpid-proton"
+                 have_libqpid_proton=yes
+            ])
+        ])
+
+    ],,[$1],[$2])
 ])dnl
 dnl
 dnl - BT_CHECK_LIBQPID_PROTON([action-if-found],[action-if-not-found])

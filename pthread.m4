@@ -25,7 +25,10 @@ AC_DEFUN([BT_REQUIRE_PTHREAD],[
 		])
 	])
 	AC_CHECK_HEADER([pthread.h],,[cannot locate the header providing POSIX threads])
+	have_pthread=yes
+	AC_SUBST([have_pthread])
 	AC_SUBST([PTHREAD_LIBS])
 	AC_SUBST([PTHREAD_LOCAL_LIBS])
 	AC_SUBST([PTHREAD_INSTALLED_LIBS])
+	AC_DEFINE_UNQUOTED([WITH_PTHREAD],[1],[Define if POSIX threads headers and libraries are available])
 ])

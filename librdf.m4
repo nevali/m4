@@ -1,3 +1,7 @@
+dnl Author: Mo McRoberts <mo.mcroberts@bbc.co.uk>
+dnl
+dnl Copyright 2015 BBC
+dnl
 dnl Copyright 2013 Mo McRoberts.
 dnl
 dnl  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,23 +21,25 @@ m4_pattern_forbid([^_BT_])dnl
 dnl Internal: _BT_CHECK_LIBRDF([action-if-exists],[action-if-not-exists],[subdir],[preconfigured])
 AC_DEFUN([_BT_CHECK_LIBRDF],[
 	m4_ifval([$4],[librdf_configured=yes])
-	BT_CHECK_LIB([librdf],[$3],[redland],[
-		AC_CHECK_PROGS([REDLAND_CONFIG],[redland-config])
-		if test -n "$REDLAND_CONFIG" ; then
-			LIBRDF_CPPFLAGS="`$REDLAND_CONFIG --cflags`"
-			LIBRDF_LIBS="`$REDLAND_CONFIG --libs`"
-			CPPFLAGS="$CPPFLAGS $LIBRDF_CPPFLAGS"
-			LIBS="$LIBRDF_LIBS $LIBS"
-			AC_CHECK_HEADER([librdf.h],[
-				AC_CHECK_LIB([rdf],[librdf_model_add],[
-					have_librdf=yes
+	BT_CHECK_LIBRAPTOR2
+	if test x"$have_libraptor2" = x"yes" ; then
+		BT_CHECK_LIB([librdf],[$3],[redland],[
+			AC_CHECK_PROGS([REDLAND_CONFIG],[redland-config])
+			if test -n "$REDLAND_CONFIG" ; then
+				LIBRDF_CPPFLAGS="`$REDLAND_CONFIG --cflags`"
+				LIBRDF_LIBS="`$REDLAND_CONFIG --libs`"
+				CPPFLAGS="$CPPFLAGS $LIBRDF_CPPFLAGS"
+				LIBS="$LIBRDF_LIBS $LIBS"
+				AC_CHECK_HEADER([librdf.h],[
+					AC_CHECK_LIB([rdf],[librdf_model_add],[
+						have_librdf=yes
+					])
 				])
-			])
-		fi
-	],[
-		LIBRDF_LOCAL_LIBS="${librdf_builddir}/librdf.la"
-		LIBRDF_INSTALLED_LIBS="-L${libdir} -luri"
-	],[$1],[$2])
+			fi
+		],,[$1],[$2])
+	else
+		m4_ifval([$2],[$2],true)
+	fi
 ])dnl
 dnl
 dnl - BT_CHECK_LIBRDF([action-if-found],[action-if-not-found])

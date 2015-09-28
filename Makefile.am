@@ -13,3 +13,6 @@
 ##  limitations under the License.
 
 EXTRA_DIST = README.md get-version.sh *.m4
+
+checkout:
+	@true

@@ -57,8 +57,16 @@ $(top_srcdir)/docbook-html5/toc.xsl'
 else
    build_docs=no
 fi
+if test x"$dbh5htdocdir" = x"" ; then
+	dbh5htdocdir='${docdir}'
+fi
+if test x"$use_docbook_html5" = x"yes" ; then
+	test x"$build_docs" = x"yes" || install_docbook_html5=no
+	AM_CONDITIONAL([INSTALL_DOCBOOK_HTML5],[test x"$install_docbook_html5" = x"yes"])
+fi
 AC_MSG_CHECKING([whether to re-build documentation if needed])
 AC_MSG_RESULT([$build_docs])
 AC_SUBST([XML2MAN])
 AC_SUBST([XML2HTML])
+AC_SUBST([dbh5htdocdir])
 ])dnl

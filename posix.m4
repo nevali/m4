@@ -1,3 +1,7 @@
+dnl Author: Mo McRoberts <mo.mcroberts@bbc.co.uk>
+dnl
+dnl Copyright 2015 BBC
+dnl
 dnl Copyright 2013 Mo McRoberts.
 dnl
 dnl  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,4 +25,11 @@ AC_DEFINE_UNQUOTED([_POSIX_C_SOURCE],m4_ifval([$1],[$1],[200809L]),[This applica
 dnl - BT_ENABLE_XSI([version=600])
 AC_DEFUN([BT_ENABLE_XSI],[
 AC_DEFINE_UNQUOTED([_XOPEN_SOURCE],m4_ifval([$1],[$1],[600]),[This application requires the X/Open System Interfaces POSIX extension])
+])
+dnl - BT_ENABLE_POSIX_FULL([version=200809L])
+AC_DEFUN([BT_ENABLE_POSIX_FULL],[
+BT_ENABLE_XSI
+AC_DEFINE_UNQUOTED([_POSIX_C_SOURCE],m4_ifval([$1],[$1],[200809L]),[This application requires POSIX facilities])
+AC_DEFINE_UNQUOTED([_BSD_SOURCE],[1],[This application uses BSD extensions])
+AC_DEFINE_UNQUOTED([_DARWIN_C_SOURCE],[1],[On Darwin, extended prototypes must be available])
 ])

@@ -247,6 +247,7 @@ if ! test x"$bt_l_included" = x"no" ; then
 		unset top_builddir
 		unset top_srcdir
 	fi
+	BT_LIB_ADD_PKGCONFIG($bt_l_abs_builddir)dnl
 fi
 
 dnl Restore important variables
@@ -280,4 +281,24 @@ else
 	dnl Otherwise, execute the action-if-not-found
 	m4_ifvaln([$7],[$7],[true])
 fi
+])dnl
+dnl - BT_LIB_ADD_PKGCONFIG([dir])
+dnl
+dnl Add a fully-qualified path to PKG_CONFIG_PATH
+AC_DEFUN([BT_LIB_ADD_PKGCONFIG],[
+	AC_REQUIRE([_BT_LIB_OUTPUT])dnl
+	if test x"$PKG_CONFIG_PATH" = x"" ; then
+		PKG_CONFIG_PATH="$1"
+	else
+		PKG_CONFIG_PATH="$1:$PKG_CONFIG_PATH"
+	fi
+	export PKG_CONFIG_PATH
+])dnl
+dnl
+AC_DEFUN([_BT_LIB_OUTPUT],[
+	m4_rename([_AC_OUTPUT_SUBDIRS],[_BT_LIB_OUTPUT_SUBDIRS])dnl
+	m4_define([_AC_OUTPUT_SUBDIRS],[
+		AS_VAR_APPEND([ac_configure_args],[" PKG_CONFIG_PATH=$PKG_CONFIG_PATH"])
+		_BT_LIB_OUTPUT_SUBDIRS
+	])dnl
 ])dnl
